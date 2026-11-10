@@ -1,0 +1,37 @@
+/* ==========================================================================
+   AEGON Store — Estilos da Página Home (pages/home.html)
+   Bento Grid Hero (3 itens) + Carrossel Horizontal (estilo template.vercel.shop)
+   ========================================================================== */
+
+.aegon-bento-card--large {
+  min-height: 520px;
+}
+
+.aegon-bento-card--small {
+  min-height: 248px;
+  flex: 1;
+}
+
+.aegon-bento-img--large {
+  max-height: 410px;
+}
+
+.aegon-bento-card--small .aegon-bento-img {
+  max-height: 185px;
+}
+
+/* Carrossel Horizontal da Home */
+.aegon-marquee-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: var(--blue-wake) rgba(4, 21, 56, 0.5);
+}
+
+.aegon-carousel-item {
+  width: 300px;
+  height: 220px;
+}
+
+.aegon-carousel-img {
+  max-height: 165px;
+}
+

@@ -1,0 +1,27 @@
+<script setup lang="ts">
+import { ArrowUpRight, ArrowRight, Sparkles, Fingerprint, Layers, Plus } from 'lucide-vue-next'
+import ProductCard from '../components/ProductCard.vue'
+import { featured } from '../data/products'
+import { storefront } from '../admin-store'
+</script>
+
+<template>
+  <div class="home-page page-container">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy"><div class="hero-eyebrow"><span class="live-dot"></span> {{ storefront.eyebrow }}</div><h1 id="hero-title">{{ storefront.headline }}<br /><span>{{ storefront.highlight }}</span></h1><p class="hero-subtitle">{{ storefront.subtitle }}</p><RouterLink to="/produtos" class="button button-cream">{{ storefront.cta }} <ArrowUpRight :size="19" /></RouterLink><div class="hero-caption"><span class="hero-caption-line"></span>Original por essência. on por escolha.</div></div>
+      <div class="hero-photo"><img class="hero-flatlay" :src="storefront.heroImage" alt="Produtos Aegon em destaque" width="919" height="509" fetchpriority="high" /><span class="photo-corner"></span><div class="hero-photo-label"><span>DETALHES QUE CONECTAM.</span><span>COLEÇÃO / 01</span></div><div class="hero-sticker"><span>feito por<br />gente.</span><ArrowUpRight :size="23" /></div><div class="hero-photo-bottom"><span>Wear your state of mind.</span><span class="photo-on">on</span></div></div>
+    </section>
+
+    <div class="collection-note"><span><span class="note-dot"></span> Uma marca. Muitas formas de estar on.</span><span>Design autoral <span>·</span> Essenciais de verdade <span>·</span> Identidade em cada detalhe</span></div>
+
+    <section class="featured-section" aria-labelledby="featured-title"><div class="section-heading"><div><span class="eyebrow">SEU DIA A DIA, COM MAIS IDENTIDADE</span><h2 id="featured-title">O essencial tem a sua cara<span class="blue-period">.</span></h2></div><RouterLink to="/produtos" class="text-link">Ver toda a coleção <ArrowUpRight :size="18" /></RouterLink></div><div class="product-grid"><ProductCard v-for="product in featured" :key="product.id" :product="product" /></div></section>
+
+    <section class="category-section" aria-labelledby="category-title"><div class="section-heading"><div><span class="eyebrow">ENCONTRE O SEU MODO ON</span><h2 id="category-title">Pra vestir. Pra criar. Pra levar.</h2></div><span class="section-aside">Qual é o seu essencial?</span></div><div class="category-grid"><RouterLink to="/produtos?categoria=Camisas" class="category-tile category-tile-clothing"><div><span>01 / PRA VESTIR</span><h3>Vista a sua<br />originalidade.</h3></div><img src="/products/prod-camisa-pulse.svg" alt="Camisa Core Pulse" loading="lazy" width="800" height="800" /><span class="category-link">Camisas <span class="circle-arrow"><ArrowUpRight :size="18" /></span></span></RouterLink><RouterLink to="/produtos?categoria=Garrafas" class="category-tile category-tile-bottle"><div><span>02 / PRA LEVAR</span><h3>O ritmo é seu.<br />A companhia também.</h3></div><img src="/products/prod-garrafa-blue.svg" alt="Garrafa térmica azul Aegon" loading="lazy" width="800" height="800" /><span class="category-link">Garrafas <span class="circle-arrow"><ArrowUpRight :size="18" /></span></span></RouterLink><RouterLink to="/produtos?categoria=Cadernos" class="category-tile category-tile-notes"><div><span>03 / PRA CRIAR</span><h3>Ideias boas<br />merecem espaço.</h3></div><img src="/products/prod-caderno-dark.svg" alt="Caderno Aegon Shadow State" loading="lazy" width="800" height="800" /><span class="category-link">Cadernos <span class="circle-arrow"><ArrowUpRight :size="18" /></span></span></RouterLink></div></section>
+
+    <section class="kit-feature"><div class="kit-art"><span class="kit-art-word" aria-hidden="true">on</span><img src="/products/prod-combo-full.svg" alt="Kit Full on com camisa, garrafa e caderno Aegon" loading="lazy" width="800" height="800" /><span class="kit-label">TUDO O QUE COMBINA COM VOCÊ.</span></div><div class="kit-copy"><span class="eyebrow">MELHOR AINDA, JUNTOS.</span><h2>Seu modo on.<br />Agora, completo.</h2><p>Camisa, garrafa e caderno. Três essenciais, uma só identidade. Conheça os kits que acompanham o seu dia inteiro.</p><RouterLink to="/produtos?categoria=Combos" class="button button-primary">Descobrir kits & combos <ArrowUpRight :size="18" /></RouterLink></div></section>
+
+    <section id="manifesto" class="manifesto"><div class="manifesto-top"><span class="eyebrow">ISSO É AEGON.</span><img src="/brand/assets/Logos/simbolo-on-claro.svg" alt="on" width="75" height="42" /></div><h2>O MERCADO ESTÁ CHEIO.<br />DE ORIGINALIDADE?<br /><span>NEM TANTO.</span></h2><div class="manifesto-bottom"><p>A gente acredita em escolhas com intenção.<br />Em coisas que fazem sentido. Em menos do mesmo.<br />Essenciais pra quem não abre mão de ser quem é.</p><span class="manifesto-signature">Feito por gente.<ArrowUpRight :size="24" /></span></div></section>
+
+    <section class="values-row" aria-label="Nosso jeito de fazer"><div><Fingerprint :size="27" :stroke-width="1.4" /><span><strong>Identidade, de verdade.</strong><small>Design autoral em cada escolha.</small></span></div><div><Layers :size="27" :stroke-width="1.4" /><span><strong>Detalhes que importam.</strong><small>Do primeiro olhar ao uso diário.</small></span></div><div><Sparkles :size="27" :stroke-width="1.4" /><span><strong>Feito pra acompanhar.</strong><small>Essenciais que fazem parte de você.</small></span></div></section>
+  </div>
+</template>

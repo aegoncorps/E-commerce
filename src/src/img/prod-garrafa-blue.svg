@@ -1,0 +1,39 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" fill="none">
+  <defs>
+    <radialGradient id="bgGlowB" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffc03b" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#020b1f" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bottleCyl" x1="290" y1="200" x2="510" y2="680" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0045ba"/>
+      <stop offset="32%" stop-color="#1a66e8"/>
+      <stop offset="100%" stop-color="#0045ba"/>
+    </linearGradient>
+    <filter id="shadowB" x="-20%" y="-10%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="30" stdDeviation="26" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  <rect width="800" height="800" fill="url(#bgGlowB)"/>
+  <g filter="url(#shadowB)">
+    <!-- Carry Handle Loop -->
+    <path d="M355 135 C355 88 445 88 445 135" stroke="#041538" stroke-width="14" stroke-linecap="round"/>
+    <!-- Screw Cap -->
+    <rect x="342" y="128" width="116" height="54" rx="12" fill="#041538" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+    <!-- Metallic Ring -->
+    <rect x="342" y="182" width="116" height="12" fill="#ffc03b"/>
+    <!-- Bottle Shoulder & Body -->
+    <path d="M342 194 C342 225 296 245 296 290 L296 655 C296 682 318 702 345 702 L455 702 C482 702 504 682 504 655 L504 290 C504 245 458 225 458 194 Z" fill="url(#bottleCyl)" stroke="rgba(255,255,255,0.16)" stroke-width="2"/>
+    <!-- Specular Vertical Highlight -->
+    <rect x="322" y="275" width="18" height="390" rx="9" fill="#ffffff" opacity="0.14"/>
+    <!-- Laser-etched ON symbol -->
+    
+  <g transform="translate(352, 390) scale(0.56)" fill="#fff1e4">
+    <path fill-rule="evenodd" d="M 41,0 A 41,41 0 1,0 41,82 A 41,41 0 1,0 41,0 Z M 41,21 A 20,20 0 1,1 41,61 A 20,20 0 1,1 41,21 Z"/>
+    <path d="M 89,82 V 41.5 A 41.5,41.5 0 0,1 172,41.5 V 82 H 150 V 41.5 A 19.5,19.5 0 0,0 111,41.5 V 82 Z"/>
+  </g>
+
+    <text x="400" y="510" text-anchor="middle" fill="#fff1e4" opacity="0.8" font-family="Mulish, sans-serif" font-weight="800" font-size="14" letter-spacing="5">AEGON · 750ML</text>
+    <text x="400" y="532" text-anchor="middle" fill="#fff1e4" opacity="0.5" font-family="Mulish, sans-serif" font-weight="600" font-size="11" letter-spacing="3">THERMAL WAKE</text>
+  </g>
+</svg>

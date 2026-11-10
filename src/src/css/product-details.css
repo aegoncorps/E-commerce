@@ -1,0 +1,27 @@
+/* ==========================================================================
+   AEGON Store — Estilos da Página de Detalhes do Produto (pages/product-details.html)
+   Palco de Galeria + Miniaturas + Especificações Técnicas
+   ========================================================================== */
+
+.aegon-detail-stage {
+  min-height: 440px;
+  background: radial-gradient(circle at center, rgba(0, 69, 186, 0.22) 0%, rgba(2, 11, 31, 0.65) 75%);
+  border: 1px solid var(--stroke);
+}
+
+.aegon-detail-img {
+  max-height: 380px;
+}
+
+.aegon-thumb-btn {
+  background: rgba(4, 21, 56, 0.65);
+  border: 1px solid var(--stroke);
+  transition: all 0.2s ease;
+}
+
+.aegon-thumb-btn.active,
+.aegon-thumb-btn:hover {
+  border-color: var(--blue-wake);
+  background: rgba(0, 69, 186, 0.22);
+}
+

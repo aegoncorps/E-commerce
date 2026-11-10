@@ -1,0 +1,140 @@
+<section class="container-fluid px-3 px-lg-5 py-4">
+  <!-- Breadcrumb Bootstrap -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb small mb-0">
+      <li class="breadcrumb-item"><a href="#/" class="text-secondary text-decoration-none">Início</a></li>
+      <li class="breadcrumb-item"><a href="#/produtos" class="text-secondary text-decoration-none">Produtos</a></li>
+      <li class="breadcrumb-item"><a href="#/produtos" id="detail-breadcrumb-tag" class="text-secondary text-decoration-none">Categoria</a></li>
+      <li class="breadcrumb-item active text-light fw-semibold" aria-current="page" id="detail-breadcrumb-name">Detalhes</li>
+    </ol>
+  </nav>
+
+  <!-- Card Principal do Produto (Estilo template.vercel.shop/product) -->
+  <div class="aegon-surface-card rounded-4 p-3 p-md-4 p-lg-5 mb-5">
+    <div class="row g-4 g-lg-5 align-items-start">
+      <!-- Coluna Esquerda: Galeria Visual do Produto -->
+      <div class="col-12 col-lg-7">
+        <div class="aegon-detail-stage rounded-4 d-flex align-items-center justify-content-center p-4 mb-3 position-relative overflow-hidden">
+          <span id="detail-stage-tag" class="position-absolute top-0 start-0 m-3 badge rounded-pill text-bg-dark border border-secondary px-3 py-2">
+            TAG
+          </span>
+          <img id="detail-main-image" src="img/prod-combo-full.svg" alt="Imagem do Produto" class="img-fluid aegon-detail-img">
+        </div>
+
+        <!-- Miniaturas da Galeria -->
+        <div id="detail-gallery-thumbs" class="d-flex justify-content-center gap-3 flex-wrap">
+          <!-- Miniaturas preenchidas via JS -->
+        </div>
+      </div>
+
+      <!-- Coluna Direita: Informações, Tamanho e Ação de Compra -->
+      <div class="col-12 col-lg-5">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span id="detail-tag" class="aegon-eyebrow mb-0">CATEGORIA</span>
+          <span class="badge rounded-pill text-bg-success bg-opacity-25 text-success border border-success border-opacity-25 ms-auto">
+            ● Em estoque
+          </span>
+        </div>
+
+        <h1 id="detail-name" class="h2 fw-extrabold text-white mb-2" style="letter-spacing: -0.03em;">
+          Carregando produto...
+        </h1>
+        <p id="detail-subtitle" class="text-secondary small mb-3"></p>
+
+        <!-- Pílula de Preço em Azul System Wake (#0045BA) estilo Vercel.shop -->
+        <div class="mb-4 pb-3 border-bottom border-secondary border-opacity-25 d-flex align-items-center gap-3">
+          <span id="detail-price" class="badge rounded-pill aegon-price-pill fs-5 px-3 py-2">
+            R$ 0,00 BRL
+          </span>
+          <span id="detail-installments" class="small text-secondary">
+            em até 6x sem juros
+          </span>
+        </div>
+
+        <!-- Seletor de Tamanho (Obrigatório do JSON: tamanho) -->
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <label class="text-uppercase fw-extrabold small text-light" style="font-size: 0.74rem; letter-spacing: 0.14em;">
+              Tamanho / Opção
+            </label>
+            <span id="detail-selected-size-label" class="small text-warning fw-bold"></span>
+          </div>
+          <div id="detail-sizes-container" class="d-flex flex-wrap gap-2">
+            <!-- Botões de tamanho injetados via JS -->
+          </div>
+        </div>
+
+        <!-- Seletor de Quantidade -->
+        <div class="mb-4">
+          <label class="text-uppercase fw-extrabold small text-light d-block mb-2" style="font-size: 0.74rem; letter-spacing: 0.14em;">
+            Quantidade
+          </label>
+          <div class="d-inline-flex align-items-center rounded-pill border border-secondary px-2 py-1 aegon-qty-box">
+            <button type="button" id="detail-qty-minus" class="btn btn-sm text-light border-0 px-3 fw-bold" aria-label="Diminuir quantidade">−</button>
+            <span id="detail-qty-value" class="px-3 fw-bold text-white">1</span>
+            <button type="button" id="detail-qty-plus" class="btn btn-sm text-light border-0 px-3 fw-bold" aria-label="Aumentar quantidade">+</button>
+          </div>
+        </div>
+
+        <!-- Descrição -->
+        <p id="detail-description" class="text-secondary mb-4" style="line-height: 1.65;"></p>
+
+        <!-- Botão Principal: Adicionar ao Carrinho -->
+        <div class="d-grid gap-2 mb-4">
+          <button type="button" id="detail-add-cart-btn" class="btn btn-primary btn-lg rounded-pill py-3 fw-extrabold d-flex align-items-center justify-content-center gap-2 shadow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+            </svg>
+            <span>Adicionar ao Carrinho</span>
+          </button>
+        </div>
+
+        <!-- Accordion Bootstrap de Especificações e Envio -->
+        <div class="accordion accordion-flush aegon-accordion" id="detailSpecsAccordion">
+          <div class="accordion-item bg-transparent border-secondary border-opacity-25">
+            <h2 class="accordion-header">
+              <button class="accordion-button bg-transparent text-light fw-bold px-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpecs" aria-expanded="true" aria-controls="collapseSpecs">
+                Especificações &amp; Detalhes Físicos
+              </button>
+            </h2>
+            <div id="collapseSpecs" class="accordion-collapse collapse show" data-bs-parent="#detailSpecsAccordion">
+              <div class="accordion-body px-0 pt-2 pb-3">
+                <ul id="detail-specs-list" class="list-unstyled small text-secondary mb-0 d-flex flex-column gap-2">
+                  <!-- Especificações injetadas via JS -->
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item bg-transparent border-secondary border-opacity-25">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed bg-transparent text-light fw-bold px-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShipping" aria-expanded="false" aria-controls="collapseShipping">
+                Envio, Trocas &amp; Garantia AEGON
+              </button>
+            </h2>
+            <div id="collapseShipping" class="accordion-collapse collapse" data-bs-parent="#detailSpecsAccordion">
+              <div class="accordion-body px-0 pt-2 pb-3 small text-secondary">
+                Despacho em até 24h úteis para todo o Brasil. Frete grátis em pedidos acima de R$ 250,00 (como o Combo Full ON). Primeira troca gratuita em até 30 dias.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Produtos Relacionados (Estilo template.vercel.shop) -->
+  <div class="pt-2">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <span class="aegon-eyebrow mb-1">COMBINE COM SEU SETUP</span>
+        <h3 class="h4 fw-extrabold text-white mb-0">Produtos Relacionados</h3>
+      </div>
+      <a href="#/produtos" class="btn btn-sm btn-outline-light rounded-pill px-3">Ver todos →</a>
+    </div>
+    <div id="related-products-grid" class="row g-4">
+      <!-- Cards relacionados injetados via JS -->
+    </div>
+  </div>
+</section>
+

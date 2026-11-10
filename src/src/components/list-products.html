@@ -1,0 +1,26 @@
+<!-- Componente de Listagem de Produtos (Bootstrap Grid estilo Vercel.shop) -->
+<div class="aegon-list-products">
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+    <div id="products-status-text" class="small text-secondary">
+      Carregando catálogo AEGON...
+    </div>
+    <button id="btn-clear-filters" type="button" class="btn btn-sm btn-outline-light rounded-pill px-3 py-1 d-none">
+      Limpar filtros ✕
+    </button>
+  </div>
+
+  <!-- Grid de Cards de Produtos -->
+  <div id="products-grid" class="row g-4">
+    <!-- Cards de produtos injetados via JS a partir do produtos.json -->
+  </div>
+
+  <!-- Estado sem resultados -->
+  <div id="products-empty" class="text-center py-5 my-4 aegon-surface-card rounded-4 d-none">
+    <h5 class="fw-bold mb-2">Nenhum produto encontrado</h5>
+    <p class="text-secondary small mb-3">Tente ajustar os filtros de categoria, tamanho ou termo de busca.</p>
+    <button id="btn-reset-empty" type="button" class="btn btn-primary rounded-pill px-4 py-2 fw-bold">
+      Ver Todos os Produtos
+    </button>
+  </div>
+</div>
+

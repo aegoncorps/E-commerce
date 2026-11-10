@@ -1,0 +1,200 @@
+[
+  {
+    "id": 1,
+    "nome": "Combo Full ON — Kit Completo AEGON",
+    "preco": 289.90,
+    "tag": "Combos",
+    "tamanho": ["P", "M", "G", "GG"],
+    "imagem": "img/prod-combo-full.svg",
+    "galeria": [
+      "img/prod-combo-full.svg",
+      "img/prod-camisa-dark.svg",
+      "img/prod-garrafa-blue.svg",
+      "img/prod-caderno-pulse.svg"
+    ],
+    "destaque": true,
+    "subtitulo": "Camisa Oversized + Garrafa Térmica 750ml + Caderno Hardcover",
+    "descricao": "A experiência física completa do ecossistema AEGON em um único kit exclusivo. Inclui a Camisa Oversized Always ON em algodão pima 240g, a Garrafa Térmica System Wake 750ml em inox parede dupla e o Caderno Hardcover Core Pulse pontilhado. Escolha o tamanho da sua camisa no seletor abaixo.",
+    "especificacoes": [
+      "1x Camisa Oversized AEGON Always ON (100% Algodão Peruano 240g/m²)",
+      "1x Garrafa Térmica System Wake 750ml (Inox 304 — 24h gelado / 12h quente)",
+      "1x Caderno Hardcover Core Pulse A5 (192 páginas pontilhadas 120g/m²)",
+      "Caixa colecionador magnética com acabamento Soft-Touch Shadow State"
+    ]
+  },
+  {
+    "id": 2,
+    "nome": "Garrafa Térmica AEGON System Wake",
+    "preco": 119.90,
+    "tag": "Garrafas",
+    "tamanho": ["500ml", "750ml", "1L"],
+    "imagem": "img/prod-garrafa-blue.svg",
+    "galeria": [
+      "img/prod-garrafa-blue.svg",
+      "img/prod-garrafa-pulse.svg",
+      "img/prod-kit-duo.svg"
+    ],
+    "destaque": true,
+    "subtitulo": "Isolamento a vácuo de parede dupla em Azul System Wake (#0045BA)",
+    "descricao": "Projetada para acompanhar jornadas intensas de estratégia, criação e código. Construída em aço inoxidável 304 com pintura eletrostática fosca em Azul System Wake, anel metálico Solar Gold e gravação a laser do glifo oficial 'on'.",
+    "especificacoes": [
+      "Aço Inoxidável 18/8 de grau alimentício (livre de BPA)",
+      "Isolamento térmico a vácuo: até 24h frio e 12h quente",
+      "Tampa hermética anti-vazamento com alça integrada de transporte",
+      "Acabamento Powder Coat anti-suor e gravação a laser VomZom"
+    ]
+  },
+  {
+    "id": 3,
+    "nome": "Kit Duo ON — Garrafa + Caderno",
+    "preco": 179.90,
+    "tag": "Combos",
+    "tamanho": ["Kit 500ml + A5", "Kit 750ml + A5", "Kit 750ml + B5"],
+    "imagem": "img/prod-kit-duo.svg",
+    "galeria": [
+      "img/prod-kit-duo.svg",
+      "img/prod-garrafa-blue.svg",
+      "img/prod-caderno-pulse.svg"
+    ],
+    "destaque": true,
+    "subtitulo": "O par essencial de mesa: Garrafa Térmica Wake + Caderno Hardcover",
+    "descricao": "Combinação pensada para o setup de trabalho e reuniões estratégicas. Une a hidratação térmica da Garrafa System Wake com a precisão analógica do Caderno Hardcover Core Pulse em uma edição especial com desconto de combo.",
+    "especificacoes": [
+      "1x Garrafa Térmica AEGON System Wake em Azul Oficial (#0045BA)",
+      "1x Caderno Hardcover AEGON Core Pulse (#FFF1E4) com elástico e fita",
+      "Papel marfim 120g/m² resistente a canetas tinteiro e marcadores",
+      "Acompanha cartela de stickers vetoriais 'Juntos, on.'"
+    ]
+  },
+  {
+    "id": 4,
+    "nome": "Camisa Oversized AEGON Always ON",
+    "preco": 149.90,
+    "tag": "Camisas",
+    "tamanho": ["P", "M", "G", "GG"],
+    "imagem": "img/prod-camisa-dark.svg",
+    "galeria": [
+      "img/prod-camisa-dark.svg",
+      "img/prod-camisa-blue.svg",
+      "img/prod-camisa-pulse.svg"
+    ],
+    "destaque": false,
+    "subtitulo": "Modelagem Streetwear Heavyweight em Dark Space (#020B1F)",
+    "descricao": "Corte boxy estruturado com gola canelada de 3cm e malha encorpada de alta gramatura. Traz a logo oficial AEGON com a pílula 'on' em silk-screen de alta densidade no peito e etiqueta tecida na barra.",
+    "especificacoes": [
+      "Malha 100% Algodão Penteado Heavyweight (240g/m²)",
+      "Gola ribana estruturada de 3cm que não deforma",
+      "Estampa frontal em Silk HD toque zero + etiqueta bordada 'on'",
+      "Pré-encolhida e perfumada com essência exclusiva AEGON Studio"
+    ]
+  },
+  {
+    "id": 5,
+    "nome": "Caderno Hardcover AEGON Core Pulse",
+    "preco": 79.90,
+    "tag": "Cadernos",
+    "tamanho": ["A5", "B5"],
+    "imagem": "img/prod-caderno-pulse.svg",
+    "galeria": [
+      "img/prod-caderno-pulse.svg",
+      "img/prod-caderno-dark.svg",
+      "img/prod-kit-duo.svg"
+    ],
+    "destaque": false,
+    "subtitulo": "Capa dura em couro ecológico Core Pulse (#FFF1E4) com abertura 180°",
+    "descricao": "Desenhado para arquitetos de software, designers e estrategistas. Possui abertura total em 180 graus (lay-flat), miolo pontilhado discreto para wireframes e anotações, fita marcadora Solar Gold e fecho elástico em Azul System Wake.",
+    "especificacoes": [
+      "Capa dura revestida em material sintético toque aveludado (#FFF1E4)",
+      "192 páginas numeradas com matriz de pontos (dot-grid 5mm)",
+      "Gramatura 120g/m² em tom creme confortável para leitura",
+      "Bolso interno expansível na contracapa + fita marcadora #FFC03B"
+    ]
+  },
+  {
+    "id": 6,
+    "nome": "Camisa Tech Essential Azul Wake",
+    "preco": 139.90,
+    "tag": "Camisas",
+    "tamanho": ["P", "M", "G", "GG"],
+    "imagem": "img/prod-camisa-blue.svg",
+    "galeria": [
+      "img/prod-camisa-blue.svg",
+      "img/prod-camisa-dark.svg",
+      "img/prod-camisa-pulse.svg"
+    ],
+    "destaque": false,
+    "subtitulo": "Edição vibrante no Azul primário oficial da identidade AEGON",
+    "descricao": "Tecnologia têxtil que combina fibras naturais e toque gelado. Não amassa no dia a dia, possui regulação térmica inteligente e destaca a assinatura 'aegon' em contraste Core Pulse.",
+    "especificacoes": [
+      "Blend Modal & Algodão Egípcio com tecnologia anti-odor",
+      "Não precisa passar — ideal para viagens e eventos de tecnologia",
+      "Tingimento reativo em Azul System Wake (#0045BA) que não desbota",
+      "Costuras reforçadas ombro a ombro"
+    ]
+  },
+  {
+    "id": 7,
+    "nome": "Garrafa Minimal AEGON Core Pulse",
+    "preco": 99.90,
+    "tag": "Garrafas",
+    "tamanho": ["500ml", "750ml"],
+    "imagem": "img/prod-garrafa-pulse.svg",
+    "galeria": [
+      "img/prod-garrafa-pulse.svg",
+      "img/prod-garrafa-blue.svg"
+    ],
+    "destaque": false,
+    "subtitulo": "Acabamento cerâmico fosco em tom Core Pulse (#FFF1E4)",
+    "descricao": "Visual minimalista editorial na cor creme oficial da marca. Revestimento interno que preserva 100% da pureza do sabor do café ou da água gelada, com tampa em contraste Azul System Wake.",
+    "especificacoes": [
+      "Revestimento interno inox polido que não retém odores",
+      "Pintura externa fosca Core Pulse (#FFF1E4) resistente a riscos",
+      "Base emborrachada silenciosa para apoiar na mesa de trabalho",
+      "Conservação térmica de até 20h para líquidos frios e 10h quentes"
+    ]
+  },
+  {
+    "id": 8,
+    "nome": "Camisa Editorial AEGON Core Pulse",
+    "preco": 144.90,
+    "tag": "Camisas",
+    "tamanho": ["P", "M", "G", "GG"],
+    "imagem": "img/prod-camisa-pulse.svg",
+    "galeria": [
+      "img/prod-camisa-pulse.svg",
+      "img/prod-camisa-dark.svg",
+      "img/prod-camisa-blue.svg"
+    ],
+    "destaque": false,
+    "subtitulo": "Off-White Core Pulse com tipografia VomZom em Azul System Wake",
+    "descricao": "Inspirada nos editoriais minimalistas da marca. O fundo claro em tom Core Pulse (#FFF1E4) faz o switch 'on' em Azul System Wake saltar aos olhos com contraste limpo e sofisticado.",
+    "especificacoes": [
+      "100% Algodão Orgânico Certificado (220g/m²)",
+      "Tonalidade natural Core Pulse (#FFF1E4) sem alvejantes químicos",
+      "Estampa frontal de alta definição com toque macio",
+      "Modelagem contemporânea confortável"
+    ]
+  },
+  {
+    "id": 9,
+    "nome": "Caderno Executive AEGON Shadow State",
+    "preco": 84.90,
+    "tag": "Cadernos",
+    "tamanho": ["A5", "B5"],
+    "imagem": "img/prod-caderno-dark.svg",
+    "galeria": [
+      "img/prod-caderno-dark.svg",
+      "img/prod-caderno-pulse.svg"
+    ],
+    "destaque": false,
+    "subtitulo": "Edição noturna em azul profundo (#041538) com elástico Solar Gold",
+    "descricao": "A versão executiva escura do nosso caderno de engenharia e design. Capa em Shadow State com lombada em Azul System Wake e elástico contrastante em dourado solar (#FFC03B).",
+    "especificacoes": [
+      "Capa rígida impermeável em tom Shadow State (#041538)",
+      "Fechamento elástico reforçado em Solar Gold (#FFC03B)",
+      "192 páginas pontilhadas + índice de projetos nas páginas iniciais",
+      "Abertura 180° costurada para máxima durabilidade"
+    ]
+  }
+]
+

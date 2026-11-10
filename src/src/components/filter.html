@@ -1,0 +1,59 @@
+<!-- Componente de Filtro lateral e Ordenação (Bootstrap List Group & Pills estilo Vercel.shop) -->
+<div class="aegon-filter-panel">
+  <!-- Coleções / Tags -->
+  <div class="mb-4">
+    <h6 class="text-uppercase fw-extrabold text-secondary mb-3" style="font-size: 0.72rem; letter-spacing: 0.16em;">
+      Coleções
+    </h6>
+    <div id="filter-tags-list" class="list-group list-group-flush gap-1">
+      <button type="button" class="list-group-item list-group-item-action aegon-filter-item active rounded-3 py-2 px-3" data-filter-tag="all">
+        Todos os Produtos
+      </button>
+      <button type="button" class="list-group-item list-group-item-action aegon-filter-item rounded-3 py-2 px-3" data-filter-tag="Combos">
+        Combos &amp; Kits
+      </button>
+      <button type="button" class="list-group-item list-group-item-action aegon-filter-item rounded-3 py-2 px-3" data-filter-tag="Camisas">
+        Camisas
+      </button>
+      <button type="button" class="list-group-item list-group-item-action aegon-filter-item rounded-3 py-2 px-3" data-filter-tag="Garrafas">
+        Garrafas Térmicas
+      </button>
+      <button type="button" class="list-group-item list-group-item-action aegon-filter-item rounded-3 py-2 px-3" data-filter-tag="Cadernos">
+        Cadernos
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtro por Tamanho -->
+  <div class="mb-4">
+    <h6 class="text-uppercase fw-extrabold text-secondary mb-3" style="font-size: 0.72rem; letter-spacing: 0.16em;">
+      Tamanho / Medida
+    </h6>
+    <div id="filter-sizes-list" class="d-flex flex-wrap gap-2">
+      <button type="button" class="btn btn-sm rounded-pill aegon-size-chip active" data-filter-size="all">Todos</button>
+      <button type="button" class="btn btn-sm rounded-pill aegon-size-chip" data-filter-size="P">P</button>
+      <button type="button" class="btn btn-sm rounded-pill aegon-size-chip" data-filter-size="M">M</button>
+      <button type="button" class="btn btn-sm rounded-pill aegon-size-chip" data-filter-size="G">G</button>
+      <button type="button" class="btn btn-sm rounded-pill aegon-size-chip" data-filter-size="GG">GG</button>
+      <button type="button" class="btn btn-sm rounded-pill aegon-size-chip" data-filter-size="500ml">500ml</button>
+      <button type="button" class="btn btn-sm rounded-pill aegon-size-chip" data-filter-size="750ml">750ml</button>
+      <button type="button" class="btn btn-sm rounded-pill aegon-size-chip" data-filter-size="1L">1L</button>
+      <button type="button" class="btn btn-sm rounded-pill aegon-size-chip" data-filter-size="A5">A5</button>
+      <button type="button" class="btn btn-sm rounded-pill aegon-size-chip" data-filter-size="B5">B5</button>
+    </div>
+  </div>
+
+  <!-- Ordenar Por -->
+  <div class="mb-3">
+    <h6 class="text-uppercase fw-extrabold text-secondary mb-3" style="font-size: 0.72rem; letter-spacing: 0.16em;">
+      Ordenar por
+    </h6>
+    <select id="filter-sort-select" class="form-select form-select-sm aegon-select rounded-3 py-2" aria-label="Ordenar produtos">
+      <option value="relevance">Relevância · Destaques</option>
+      <option value="price-asc">Preço: Menor para Maior</option>
+      <option value="price-desc">Preço: Maior para Menor</option>
+      <option value="name-asc">Nome: A — Z</option>
+    </select>
+  </div>
+</div>
+

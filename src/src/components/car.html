@@ -1,0 +1,67 @@
+<!-- Offcanvas do Carrinho de Compras (Bootstrap Offcanvas estilo Vercel.shop) -->
+<div class="offcanvas offcanvas-end aegon-offcanvas text-light" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+  <div class="offcanvas-header border-bottom border-secondary border-opacity-25 px-4 py-3">
+    <div class="d-flex align-items-center gap-2">
+      <h5 class="offcanvas-title fw-bold mb-0" id="cartOffcanvasLabel">Meu Carrinho</h5>
+      <span id="cart-offcanvas-count" class="badge rounded-pill aegon-price-pill">0 itens</span>
+    </div>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+  </div>
+
+  <div class="offcanvas-body d-flex flex-column justify-content-between p-4">
+    <!-- Estado Vazio -->
+    <div id="cart-empty-state" class="text-center my-auto py-5">
+      <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3 aegon-empty-cart-icon">
+        <svg class="bi bi-handbag" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 1a2 2 0 0 0-2 2v2H5V3a3 3 0 1 1 6 0v2h-1V3a2 2 0 0 0-2-2M5 5H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5H11v1.5a.5.5 0 0 1-1 0V5H6v1.5a.5.5 0 0 1-1 0z"/>
+        </svg>
+      </div>
+      <h6 class="fw-bold fs-5 mb-2">Seu carrinho está vazio</h6>
+      <p class="text-secondary small mb-4">Adicione garrafas, camisas, cadernos ou o Combo Full ON para ligar seu setup.</p>
+      <a href="#/produtos" class="btn btn-primary rounded-pill px-4 py-2 fw-bold" data-bs-dismiss="offcanvas">
+        Explorar Produtos
+      </a>
+    </div>
+
+    <!-- Lista de Itens do Carrinho -->
+    <div id="cart-items-list" class="flex-grow-1 overflow-auto pe-1 d-none">
+      <!-- Renderizado dinamicamente pelo JS -->
+    </div>
+
+    <!-- Resumo e Checkout (estilo Vercel.shop) -->
+    <div id="cart-summary-footer" class="border-top border-secondary border-opacity-25 pt-3 mt-3 d-none">
+      <div class="d-flex justify-content-between align-items-center py-2 border-bottom border-secondary border-opacity-10 small">
+        <span class="text-secondary">Impostos</span>
+        <span class="text-light">Inclusos no preço</span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center py-2 border-bottom border-secondary border-opacity-10 small">
+        <span class="text-secondary">Frete Estimado</span>
+        <span id="cart-shipping-value" class="text-light fw-semibold">Calculado no checkout</span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center py-3">
+        <span class="fw-bold">Total</span>
+        <span id="cart-total-value" class="fs-5 fw-extrabold text-white">R$ 0,00 <small class="text-secondary fs-6">BRL</small></span>
+      </div>
+
+      <button id="btn-checkout" type="button" class="btn btn-primary rounded-pill w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
+        <span>Finalizar Pedido</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast de Notificação (Bootstrap Toast ao adicionar item ou finalizar pedido) -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
+  <div id="cartToast" class="toast align-items-center text-bg-primary border-0 rounded-4 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body fw-semibold d-flex align-items-center gap-2" id="cartToastMessage">
+        Produto adicionado ao carrinho!
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+    </div>
+  </div>
+</div>
+

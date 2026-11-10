@@ -1,0 +1,91 @@
+<nav class="navbar navbar-expand-lg navbar-dark w-100 py-3 px-3 px-lg-5 aegon-navbar">
+  <div class="container-fluid px-0">
+    <!-- Brand Logo + Store Badge -->
+    <a class="navbar-brand d-flex align-items-center gap-3 me-4" href="#/">
+      <img src="img/logo.svg" alt="Logo AEGON nas cores azul e branca com switch ON" height="30" class="d-inline-block align-text-top">
+      <span class="badge rounded-pill aegon-badge-store">STORE</span>
+    </a>
+
+    <!-- Mobile Toggler -->
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#aegonNavbarContent" aria-controls="aegonNavbarContent" aria-expanded="false" aria-label="Alternar navegação">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav Links + Search + Cart -->
+    <div class="collapse navbar-collapse" id="aegonNavbarContent">
+      <ul class="nav nav-underline me-auto mb-2 mb-lg-0 gap-3 align-items-lg-center">
+        <li class="nav-item">
+          <a class="nav-link aegon-nav-link" data-route="/" href="#/">Início</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link aegon-nav-link" data-route="/produtos" href="#/produtos">Todos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link aegon-nav-link" data-tag="Camisas" href="#/produtos?tag=Camisas">Camisas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link aegon-nav-link" data-tag="Garrafas" href="#/produtos?tag=Garrafas">Garrafas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link aegon-nav-link" data-tag="Cadernos" href="#/produtos?tag=Cadernos">Cadernos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link aegon-nav-link" data-tag="Combos" href="#/produtos?tag=Combos">Combos &amp; Kits</a>
+        </li>
+      </ul>
+
+      <!-- Vercel.shop Center/Right Search Bar + Action Icons -->
+      <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+        <form id="header-search-form" class="d-none d-md-flex position-relative" role="search">
+          <input
+            id="header-search-input"
+            class="form-control form-control-sm rounded-pill aegon-search-input pe-5"
+            type="search"
+            placeholder="Buscar produtos..."
+            aria-label="Buscar produtos"
+            autocomplete="off"
+          >
+          <button type="submit" class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-light opacity-75 pe-3 py-0" aria-label="Buscar">
+            <svg class="bi bi-search" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+          </button>
+        </form>
+
+        <!-- Botão Lupa (Abre modal de busca rápida components/search.html) -->
+        <button
+          type="button"
+          id="search-pop"
+          class="btn btn-outline-light aegon-icon-btn d-flex align-items-center justify-content-center"
+          data-bs-toggle="modal"
+          data-bs-target="#searchModal"
+          title="Busca rápida"
+          aria-label="Abrir busca"
+        >
+          <svg class="bi bi-search" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+          </svg>
+        </button>
+
+        <!-- Botão Carrinho (Abre Offcanvas components/car.html estilo Vercel.shop) -->
+        <button
+          type="button"
+          id="car"
+          class="btn btn-outline-light aegon-icon-btn position-relative d-flex align-items-center justify-content-center"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#cartOffcanvas"
+          aria-controls="cartOffcanvas"
+          title="Abrir carrinho"
+          aria-label="Abrir carrinho de compras"
+        >
+          <svg class="bi bi-handbag-fill" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 1a2 2 0 0 0-2 2v2H5V3a3 3 0 1 1 6 0v2h-1V3a2 2 0 0 0-2-2M5 5H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5H11v1.5a.5.5 0 0 1-1 0V5H6v1.5a.5.5 0 0 1-1 0z"/>
+          </svg>
+          <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill aegon-cart-badge">
+            0
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

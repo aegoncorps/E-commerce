@@ -1,0 +1,45 @@
+declare module 'lucide-vue-next' {
+  import type { Component } from 'vue'
+  export const icons: Record<string, Component>
+  export const ArrowLeft: Component
+  export const ArrowRight: Component
+  export const ArrowUpRight: Component
+  export const Check: Component
+  export const CheckCircle2: Component
+  export const ChevronRight: Component
+  export const CircleAlert: Component
+  export const Copy: Component
+  export const Download: Component
+  export const ExternalLink: Component
+  export const Eye: Component
+  export const GitBranch: Component
+  export const Grid2X2: Component
+  export const Heart: Component
+  export const Image: Component
+  export const Info: Component
+  export const LayoutDashboard: Component
+  export const List: Component
+  export const MapPin: Component
+  export const MapPinned: Component
+  export const Menu: Component
+  export const Minus: Component
+  export const MousePointer2: Component
+  export const MoveUpRight: Component
+  export const Package: Component
+  export const Pencil: Component
+  export const Plus: Component
+  export const Printer: Component
+  export const Search: Component
+  export const SlidersHorizontal: Component
+  export const ShoppingBag: Component
+  export const Sparkles: Component
+  export const Tags: Component
+  export const Ticket: Component
+  export const Trash2: Component
+  export const Upload: Component
+  export const X: Component
+  export const Fingerprint: Component
+  export const Layers: Component
+  export const Ruler: Component
+  export const Expand: Component
+}

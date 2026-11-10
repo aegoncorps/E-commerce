@@ -1,0 +1,37 @@
+/* ==========================================================================
+   AEGON Store — Estilos da Página de Produtos e Filtros (pages/products.html)
+   Sidebar components/filter.html + Listagem components/list-products.html
+   ========================================================================== */
+
+.aegon-filter-item {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.aegon-filter-item:hover {
+  background: rgba(9, 33, 84, 0.45);
+  color: #ffffff;
+}
+
+.aegon-filter-item.active {
+  background: var(--blue-wake) !important;
+  border-color: var(--blue-wake) !important;
+  color: #ffffff !important;
+  font-weight: 800;
+}
+
+.aegon-select {
+  background-color: rgba(4, 21, 56, 0.8);
+  border-color: var(--stroke);
+  color: var(--pulse);
+}
+
+.aegon-select:focus {
+  border-color: var(--blue-wake);
+  box-shadow: 0 0 0 3px rgba(0, 69, 186, 0.28);
+}
+

@@ -1,0 +1,47 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" fill="none">
+  <defs>
+    <radialGradient id="bgGlowD" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#0045ba" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#020b1f" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadowD" x="-20%" y="-10%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="26" stdDeviation="24" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  <rect width="800" height="800" fill="url(#bgGlowD)"/>
+  <g filter="url(#shadowD)">
+    <!-- Hardcover Notebook on Left -->
+    <g transform="translate(-75, 25) rotate(-5 400 400)">
+      <rect x="222" y="192" width="290" height="430" rx="20" fill="#d9cbb8"/>
+      <rect x="210" y="180" width="290" height="426" rx="20" fill="#fff1e4" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <rect x="210" y="180" width="26" height="426" rx="8" fill="#0045ba"/>
+      <rect x="452" y="180" width="18" height="426" fill="#0045ba"/>
+      
+  <g transform="translate(312, 330) scale(0.45)" fill="#0045ba">
+    <path fill-rule="evenodd" d="M 41,0 A 41,41 0 1,0 41,82 A 41,41 0 1,0 41,0 Z M 41,21 A 20,20 0 1,1 41,61 A 20,20 0 1,1 41,21 Z"/>
+    <path d="M 89,82 V 41.5 A 41.5,41.5 0 0,1 172,41.5 V 82 H 150 V 41.5 A 19.5,19.5 0 0,0 111,41.5 V 82 Z"/>
+  </g>
+
+      <text x="350" y="440" text-anchor="middle" fill="#0a2844" font-family="Mulish, sans-serif" font-weight="800" font-size="12" letter-spacing="4">AEGON NOTES</text>
+    </g>
+    <!-- Thermal Bottle on Right -->
+    <g transform="translate(135, 10)">
+      <path d="M362 155 C362 115 438 115 438 155" stroke="#0a2844" stroke-width="12" stroke-linecap="round"/>
+      <rect x="352" y="148" width="96" height="46" rx="10" fill="#041538" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+      <rect x="352" y="194" width="96" height="10" fill="#ffc03b"/>
+      <path d="M352 204 C352 230 312 248 312 288 L312 630 C312 654 330 672 354 672 L446 672 C470 672 488 654 488 630 L488 288 C488 248 448 230 448 204 Z" fill="#0045ba" stroke="rgba(255,255,255,0.22)" stroke-width="2"/>
+      <rect x="334" y="280" width="14" height="350" rx="7" fill="#ffffff" opacity="0.16"/>
+      
+  <g transform="translate(360, 390) scale(0.46)" fill="#fff1e4">
+    <path fill-rule="evenodd" d="M 41,0 A 41,41 0 1,0 41,82 A 41,41 0 1,0 41,0 Z M 41,21 A 20,20 0 1,1 41,61 A 20,20 0 1,1 41,21 Z"/>
+    <path d="M 89,82 V 41.5 A 41.5,41.5 0 0,1 172,41.5 V 82 H 150 V 41.5 A 19.5,19.5 0 0,0 111,41.5 V 82 Z"/>
+  </g>
+
+      <text x="400" y="495" text-anchor="middle" fill="#fff1e4" font-family="Mulish, sans-serif" font-weight="800" font-size="12" letter-spacing="4">WAKE 750ML</text>
+    </g>
+    <!-- Badge Pill -->
+    <rect x="295" y="675" width="210" height="40" rx="20" fill="#041538" stroke="#ffc03b" stroke-width="1.5"/>
+    <text x="400" y="700" text-anchor="middle" fill="#ffc03b" font-family="Mulish, sans-serif" font-weight="800" font-size="12" letter-spacing="3">DUO PACK · ON</text>
+  </g>
+</svg>
