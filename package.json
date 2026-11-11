@@ -3,10 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22 <23"
+  },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "dev:local": "vite --mode development --host 127.0.0.1",
     "build": "vue-tsc --noEmit && vite build",
+    "build:dev": "vue-tsc --noEmit && vite build --mode development",
+    "build:preview": "vue-tsc --noEmit && vite build --mode preview",
     "preview": "vite preview --host 127.0.0.1",
+    "typecheck": "vue-tsc --noEmit",
     "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
