@@ -25,6 +25,7 @@ export interface Order {
   createdAt: string
   status: 'Novo' | 'Separando' | 'Enviado' | 'Entregue'
   shipping: 'PAC' | 'SEDEX'
+  paymentMethod?: 'pix' | 'card'
   customer: { name: string; email: string; phone: string; address: CustomerAddress }
   items: Array<{ productId: number; name: string; size: string; quantity: number; price: number }>
   total: number
