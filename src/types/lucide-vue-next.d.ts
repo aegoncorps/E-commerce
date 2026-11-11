@@ -9,6 +9,7 @@ declare module 'lucide-vue-next' {
   export const ChevronRight: Component
   export const CircleAlert: Component
   export const Copy: Component
+  export const CreditCard: Component
   export const Download: Component
   export const ExternalLink: Component
   export const Eye: Component
@@ -29,6 +30,7 @@ declare module 'lucide-vue-next' {
   export const Pencil: Component
   export const Plus: Component
   export const Printer: Component
+  export const QrCode: Component
   export const Search: Component
   export const SlidersHorizontal: Component
   export const ShoppingBag: Component
