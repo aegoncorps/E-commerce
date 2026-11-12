@@ -122,14 +122,15 @@ watch([step, payment], async ([currentStep, method]) => {
     cardBrick = await mp.bricks().create('cardPayment', 'cardPaymentBrick_container', {
       initialization: { amount: subtotal.value },
       callbacks: {
+        onReady: () => {},
         onSubmit: async (formData: any) => {
           const payer = formData.payer ?? {}
           return submitOrder({ method: 'card', token: formData.token, paymentMethodId: formData.payment_method_id, installments: Number(formData.installments), identificationType: payer.identification?.type, identificationNumber: payer.identification?.number })
         },
-        onError: () => { paymentError.value = 'Confira os dados do cartão e tente novamente.' },
+        onError: (error: unknown) => { console.error('Erro no Brick de cartão do Mercado Pago:', error); paymentError.value = 'Confira os dados do cartão e tente novamente.' },
       },
     })
-  } catch { paymentError.value = 'Não foi possível preparar o formulário seguro de cartão.' }
+  } catch (error) { console.error('Falha ao inicializar o Brick de cartão do Mercado Pago:', error); paymentError.value = 'Não foi possível preparar o formulário seguro de cartão.' }
 })
 watch(couponCode, value => { if (appliedCoupon.value && value.trim().toUpperCase() !== appliedCoupon.value.code) { appliedCoupon.value = null; couponMessage.value = '' } })
 
