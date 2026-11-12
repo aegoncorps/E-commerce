@@ -38,6 +38,7 @@ declare module 'lucide-vue-next' {
   export const Tags: Component
   export const Ticket: Component
   export const Trash2: Component
+  export const Truck: Component
   export const Upload: Component
   export const X: Component
   export const Fingerprint: Component

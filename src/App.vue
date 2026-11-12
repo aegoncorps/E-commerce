@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Search, ShoppingBag, Heart, ArrowUpRight, ArrowRight, Menu, Plus, Minus, Trash2, Check, Package, Sparkles, MoveUpRight } from 'lucide-vue-next'
+import { Search, ShoppingBag, Heart, ArrowUpRight, ArrowRight, Menu, Plus, Minus, Trash2, Check, Package, Sparkles, MoveUpRight, Truck } from 'lucide-vue-next'
 import OverlayPanel from './components/OverlayPanel.vue'
 import { money, products } from './data/products'
 import { cartOpen, searchOpen, menuOpen, cartCount, cartItems, subtotal, setQuantity, notice, storageWarning } from './store'
@@ -11,6 +11,16 @@ const router = useRouter()
 const isAdmin = computed(() => route.path.startsWith('/admin'))
 const search = ref('')
 const info = ref('')
+const announcementIndex = ref(0)
+let announcementTimer: ReturnType<typeof setInterval> | undefined
+onMounted(() => {
+  announcementTimer = setInterval(() => {
+    announcementIndex.value = announcementIndex.value === 0 ? 1 : 0
+  }, 3000)
+})
+onBeforeUnmount(() => {
+  if (announcementTimer) clearInterval(announcementTimer)
+})
 function skipToContent() {
   const main = document.getElementById('main-content')
   main?.focus()
@@ -42,9 +52,14 @@ const infoCopy: Record<string, string[]> = {
   <div class="site" :inert="modalOpen || undefined">
     <template v-if="!isAdmin">
     <a href="#main-content" class="skip-link" @click.prevent="skipToContent">Pular para o conteúdo</a>
-    <div class="announcement"><span>Feito por gente. Menos do mesmo.</span><span class="announcement-center">A sua rotina no modo <span class="tiny-on">on</span></span><span>Brasil <span class="announcement-divider">/</span> BRL R$</span></div>
+    <div class="announcement"><span class="announcement-brand">Feito por gente. Menos do mesmo.</span><span class="announcement-center"><Transition name="push-right" mode="out-in"><span :key="announcementIndex" class="announcement-slide"><template v-if="announcementIndex === 0">A sua rotina no modo <span class="tiny-on">on</span></template><template v-else><Truck :size="15" stroke-width="2" /> Frete grátis na primeira compra</template></span></Transition></span><span class="announcement-region">Brasil <span class="announcement-divider">/</span> BRL R$</span></div>
     <header class="site-header">
       <div class="header-inner">
+        <div class="mobile-header" aria-label="Ações da loja">
+          <button class="mobile-header-action" aria-label="Abrir menu" @click="menuOpen = true"><Menu :size="24" /></button>
+          <button class="mobile-search" aria-label="Buscar produtos" @click="searchOpen = true"><Search :size="19" /><span>Buscar na Aegon</span></button>
+          <button class="mobile-header-action mobile-cart" :aria-label="`Abrir sacola com ${cartCount} itens`" @click="cartOpen = true"><ShoppingBag :size="22" /><span v-if="cartCount" class="mobile-cart-count">{{ cartCount }}</span></button>
+        </div>
         <RouterLink to="/" class="brand-link" aria-label="Aegon Store — início"><img src="/brand/assets/Logos/aegon-logo-positivo.svg" alt="aegon" width="126" height="47" /><span class="brand-store">store</span></RouterLink>
         <nav class="desktop-nav" aria-label="Navegação principal">
           <RouterLink to="/" :class="{ active: route.path === '/' }">Início</RouterLink>
@@ -102,3 +117,28 @@ const infoCopy: Record<string, string[]> = {
   <OverlayPanel v-if="menuOpen" title="Explore a Aegon" side @close="menuOpen = false"><nav class="mobile-nav" aria-label="Navegação mobile" @click="menuOpen = false"><RouterLink to="/">Início <ArrowUpRight /></RouterLink><RouterLink to="/produtos">Toda a coleção <ArrowUpRight /></RouterLink><RouterLink to="/produtos?categoria=Camisas">Vestuário <ArrowUpRight /></RouterLink><RouterLink to="/produtos?categoria=Combos">Kits & combos <ArrowUpRight /></RouterLink><RouterLink to="/favoritos">Favoritos <Heart /></RouterLink></nav><img class="menu-symbol" src="/brand/assets/Logos/on-tipografico-azul.svg" alt="on" /></OverlayPanel>
   <OverlayPanel v-if="info" :title="info" @close="info = ''"><div class="info-copy"><p v-for="paragraph in infoCopy[info]" :key="paragraph">{{ paragraph }}</p><a v-if="info === 'Fale com a Aegon'" class="button button-primary" href="mailto:aegoncorps@gmail.com">Enviar e-mail <ArrowUpRight :size="18" /></a></div></OverlayPanel></template>
 </template>
+
+<style scoped>
+.mobile-header{display:none}
+.announcement-center{position:relative;overflow:hidden;min-height:22px}
+.announcement-slide{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.announcement-divider{padding:0 10px;opacity:.5}
+.push-right-enter-active,.push-right-leave-active{transition:transform .35s ease,opacity .35s ease}
+.push-right-enter-from{transform:translateX(-18px);opacity:0}
+.push-right-leave-to{transform:translateX(18px);opacity:0}
+@media(max-width:650px){
+  .announcement{justify-content:space-between;padding-inline:12px;font-size:8px}
+  .announcement-brand{display:none}
+  .announcement-center{font-size:8px}
+  .announcement-slide{gap:4px}
+  .announcement-divider{padding:0 3px}
+  .site-header{background:var(--pulse-yellow)}
+  .header-inner{width:100%;min-height:62px;padding:0 14px}
+  .header-inner>.brand-link,.header-inner>.header-actions{display:none}
+  .mobile-header{display:grid;grid-template-columns:40px minmax(0,1fr) 40px;align-items:center;gap:10px;width:100%}
+  .mobile-header-action{position:relative;display:grid;place-items:center;width:40px;height:44px;color:var(--shadow-state)}
+  .mobile-search{display:flex;align-items:center;gap:9px;min-width:0;height:40px;padding:0 13px;border-radius:22px;background:#fff;color:var(--ink-muted);font-size:12px;text-align:left;box-shadow:0 2px 8px #0a284414}
+  .mobile-search span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mobile-cart-count{position:absolute;top:0;right:0;display:grid;place-items:center;min-width:17px;height:17px;padding:0 4px;border-radius:10px;background:var(--system-wake);color:#fff;font-size:10px;font-weight:800}
+}
+</style>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ShoppingBag, Info, QrCode, CreditCard } from 'lucide-vue-next'
 import { money } from '../data/products'
 import { cart, cartItems, subtotal } from '../store'
-import { findActiveCoupon, recordOrder, track, type Coupon } from '../admin-store'
+import { findActiveCoupon, track, type Coupon } from '../admin-store'
 
 type PaymentMethod = 'pix' | 'card'
 type CheckoutStep = 1 | 2 | 3
@@ -11,6 +11,13 @@ const step = ref<CheckoutStep>(1)
 const payment = ref<PaymentMethod>('pix')
 const completed = ref(false)
 const orderId = ref('')
+const paymentError = ref('')
+const isPaying = ref(false)
+const pixPayment = ref<{ qrCode?: string; qrCodeBase64?: string; ticketUrl?: string } | null>(null)
+const paymentState = ref('')
+let paymentPoll: ReturnType<typeof setInterval> | undefined
+let cardBrick: { unmount: () => Promise<void> } | null = null
+declare global { interface Window { MercadoPago?: new (key: string, options: { locale: string }) => { bricks: () => { create: (name: string, id: string, config: Record<string, unknown>) => Promise<{ unmount: () => Promise<void> }> } } } }
 const agreed = ref(false)
 const couponCode = ref('')
 const couponMessage = ref('')
@@ -86,9 +93,42 @@ async function goToStep(next: CheckoutStep) {
 function submitStep() {
   if (step.value === 1) { void goToStep(2); return }
   if (step.value === 2) { void goToStep(3); return }
-  simulate()
+  if (payment.value === 'pix') void submitOrder()
 }
 onMounted(() => { if (cartItems.value.length) track('checkout_started', { path: '#/checkout' }) })
+onBeforeUnmount(() => { void cardBrick?.unmount(); if (paymentPoll) clearInterval(paymentPoll) })
+watch([step, payment], async ([currentStep, method]) => {
+  if (currentStep !== 3 || method !== 'card') { await cardBrick?.unmount(); cardBrick = null; return }
+  await nextTick()
+  const api = import.meta.env.VITE_API_URL?.replace(/\/$/, '')
+  if (!api) { paymentError.value = 'A conexão com o checkout ainda não foi configurada.'; return }
+  try {
+    const configResponse = await fetch(`${api}/api/payments/config`)
+    const config = await configResponse.json()
+    if (!configResponse.ok || !config.publicKey) throw new Error('O checkout seguro não está configurado no backend.')
+    if (!window.MercadoPago) {
+      await new Promise<void>((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = 'https://sdk.mercadopago.com/js/v2'
+        script.onload = () => resolve()
+        script.onerror = () => reject(new Error('Não foi possível carregar o pagamento seguro.'))
+        document.head.appendChild(script)
+      })
+    }
+    if (cardBrick || !window.MercadoPago) return
+    const mp = new window.MercadoPago(config.publicKey, { locale: 'pt-BR' })
+    cardBrick = await mp.bricks().create('cardPayment', 'cardPaymentBrick_container', {
+      initialization: { amount: subtotal.value },
+      callbacks: {
+        onSubmit: async (formData: any) => {
+          const payer = formData.payer ?? {}
+          return submitOrder({ method: 'card', token: formData.token, paymentMethodId: formData.payment_method_id, installments: Number(formData.installments), identificationType: payer.identification?.type, identificationNumber: payer.identification?.number })
+        },
+        onError: () => { paymentError.value = 'Confira os dados do cartão e tente novamente.' },
+      },
+    })
+  } catch { paymentError.value = 'Não foi possível preparar o formulário seguro de cartão.' }
+})
 watch(couponCode, value => { if (appliedCoupon.value && value.trim().toUpperCase() !== appliedCoupon.value.code) { appliedCoupon.value = null; couponMessage.value = '' } })
 
 function applyCoupon() {
@@ -98,27 +138,55 @@ function applyCoupon() {
   appliedCoupon.value = coupon
   couponMessage.value = coupon.type === 'shipping' ? 'Cupom de frete selecionado para a simulação.' : `Cupom ${coupon.code} aplicado.`
 }
-function simulate() {
-  if (!agreed.value || !cartItems.value.length) return
-  const coupon = appliedCoupon.value && findActiveCoupon(appliedCoupon.value.code)
-  if (appliedCoupon.value && (!coupon || subtotal.value < appliedCoupon.value.minimumOrder)) {
-    couponMessage.value = 'O cupom não está mais disponível para este pedido.'
-    appliedCoupon.value = null
-    return
-  }
-  const order = recordOrder({
-    shipping: buyer.shipping,
-    paymentMethod: payment.value,
-    customer: { name: buyer.name, email: buyer.email, phone: buyer.phone, address: { cep: buyer.cep, street: buyer.street, number: buyer.number, complement: buyer.complement, district: buyer.district, city: buyer.city, state: buyer.state } },
-    items: cartItems.value.map(item => ({ productId: item.productId, name: item.product.name, size: item.size, quantity: item.quantity, price: item.product.price })),
-    total: checkoutTotal.value,
-  })
-  if (coupon) coupon.used += 1
-  orderId.value = order.id
-  cart.value = []
-  completed.value = true
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+async function submitOrder(cardData?: Record<string, unknown>) {
+  if (!agreed.value || !cartItems.value.length || isPaying.value) return
+  paymentError.value = ''
+  if (appliedCoupon.value) { paymentError.value = 'Cupons serão liberados no checkout após a validação no backend.'; return }
+  const api = import.meta.env.VITE_API_URL?.replace(/\/$/, '')
+  if (!api) { paymentError.value = 'A conexão com o checkout seguro ainda não foi configurada.'; return }
+  isPaying.value = true
+  try {
+    const response = await fetch(`${api}/api/orders`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customer: { name: buyer.name, email: buyer.email, phone: buyer.phone },
+        address: { cep: buyer.cep, street: buyer.street, number: buyer.number, complement: buyer.complement || undefined, district: buyer.district, city: buyer.city, state: buyer.state },
+        items: cartItems.value.map(item => ({ productId: String(item.productId), size: item.size, quantity: item.quantity })),
+        payment: cardData ?? { method: 'pix' },
+      }),
+    })
+    const result = await response.json()
+    if (!response.ok) throw new Error(result.error || 'Não foi possível iniciar o pagamento.')
+    orderId.value = result.order.id
+    if (result.payment.method === 'pix') {
+      pixPayment.value = { qrCode: result.payment.qrCode, qrCodeBase64: result.payment.qrCodeBase64, ticketUrl: result.payment.ticketUrl }
+      paymentState.value = result.payment.status
+      if (paymentPoll) clearInterval(paymentPoll)
+      paymentPoll = setInterval(async () => {
+        try {
+          const statusResponse = await fetch(`${api}/api/orders/${encodeURIComponent(orderId.value)}/status`)
+          const statusResult = await statusResponse.json()
+          if (statusResult.order?.status === 'PAID') {
+            if (paymentPoll) clearInterval(paymentPoll)
+            cart.value = []
+            completed.value = true
+          }
+        } catch { /* a próxima consulta tentará novamente */ }
+      }, 5000)
+    } else {
+      paymentState.value = result.payment.status
+      completed.value = true
+      if (result.payment.status === 'processed' && result.payment.statusDetail === 'accredited') cart.value = []
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  } catch (error) {
+    paymentError.value = error instanceof Error ? error.message : 'Falha ao iniciar o pagamento.'
+  } finally { isPaying.value = false }
 }
+function copyPixCode() {
+  if (pixPayment.value?.qrCode) void navigator.clipboard.writeText(pixPayment.value.qrCode)
+}
+/* simulation removed: orders now come from the API and gateway */
 </script>
 
 <template>
@@ -127,15 +195,15 @@ function simulate() {
 
     <section v-if="completed" class="checkout-result" aria-live="polite">
       <span class="result-icon"><Check :size="30" /></span>
-      <span class="eyebrow">SIMULAÇÃO CONCLUÍDA</span>
+      <span class="eyebrow">PEDIDO {{ paymentState === 'processed' ? 'PROCESSADO' : 'RECEBIDO' }}</span>
       <h1>Seu pedido ficou on<span>.</span></h1>
-      <p>O pedido demonstrativo <strong>{{ orderId }}</strong> foi registrado neste navegador com {{ payment === 'pix' ? 'Pix' : 'cartão' }} como forma escolhida. Nenhum pagamento foi realizado.</p>
+      <p>Pedido <strong>{{ orderId }}</strong> · status do pagamento: <strong>{{ paymentState || 'pendente' }}</strong>. A confirmação final será atualizada pelo Mercado Pago.</p>
       <div class="result-actions"><RouterLink to="/" class="button button-primary">Voltar para a loja <ArrowUpRight :size="17" /></RouterLink><RouterLink to="/admin" class="text-link">Ver no painel <ArrowRight :size="16" /></RouterLink></div>
     </section>
 
     <template v-else-if="cartItems.length">
       <header class="checkout-v2-heading"><div><span class="eyebrow">AEGON STORE / FINALIZAR PEDIDO</span><h1>Seu próximo essencial<br />está quase <span>on.</span></h1><p>Falta pouco para levar suas escolhas com você.</p></div><span class="checkout-on" aria-hidden="true">on</span></header>
-      <div class="demo-banner" role="note"><Info :size="18" /><div><strong>Checkout em demonstração</strong><span>Os dados ficam neste navegador. Nenhum pagamento ou envio será realizado.</span></div></div>
+      <div class="demo-banner" role="note"><Info :size="18" /><div><strong>Pagamento protegido pelo Mercado Pago</strong><span>Os dados do cartão são tokenizados pelo provedor e não são armazenados pela Aegon.</span></div></div>
 
       <div class="checkout-v2-grid">
         <form class="checkout-v2-form" @submit.prevent="submitStep">
@@ -146,9 +214,11 @@ function simulate() {
             <fieldset class="checkout-options"><legend>Forma de entrega</legend><label :class="{ selected: buyer.shipping === 'PAC' }"><input v-model="buyer.shipping" type="radio" value="PAC" /><span><strong>PAC</strong><small>Entrega econômica</small></span><b>Simulado</b></label><label :class="{ selected: buyer.shipping === 'SEDEX' }"><input v-model="buyer.shipping" type="radio" value="SEDEX" /><span><strong>SEDEX</strong><small>Entrega expressa</small></span><b>Simulado</b></label></fieldset><div class="step-actions"><button type="button" class="step-back" @click="goToStep(1)"><ArrowLeft :size="15" /> Voltar</button><button class="button button-primary" type="submit">Continuar para pagamento <ArrowRight :size="17" /></button></div></template></section>
 
           <section class="checkout-panel" :class="{ 'step-collapsed': step !== 3, 'step-pending': step < 3 }"><div class="section-heading-v2"><span class="section-number">03</span><div><h2 id="checkout-step-3" tabindex="-1">Pagamento</h2><p>{{ step === 3 ? 'Escolha como prefere pagar.' : 'Disponível após preencher a entrega.' }}</p></div></div><template v-if="step === 3"><fieldset class="payment-methods"><legend class="sr-only">Forma de pagamento</legend><label :class="{ selected: payment === 'pix' }"><input v-model="payment" type="radio" value="pix" /><span class="payment-symbol pix-symbol" aria-hidden="true"><QrCode :size="19" :stroke-width="1.8" /></span><span><strong>Pix</strong><small>Prático e instantâneo</small></span><i></i></label><label :class="{ selected: payment === 'card' }"><input v-model="payment" type="radio" value="card" /><span class="payment-symbol" aria-hidden="true"><CreditCard :size="19" :stroke-width="1.8" /></span><span><strong>Cartão de crédito</strong><small>Pague com seu cartão</small></span><i></i></label></fieldset>
-            <div v-if="payment === 'pix'" class="payment-detail"><span class="detail-icon" aria-hidden="true"><QrCode :size="20" :stroke-width="1.8" /></span><div><strong>Simples assim: escolheu, pagou, ficou on.</strong><p>Após a integração, o QR Code e o código Pix aparecerão aqui. Nesta prévia não existe cobrança.</p></div></div>
-            <div v-else class="payment-detail card-preview"><div class="card-preview-top"><div><strong>Dados do cartão</strong><p>Os campos seguros serão disponibilizados após a conexão com o provedor.</p></div><span class="card-brands">VISA · master<span>card</span></span></div><div class="disabled-card-fields" aria-label="Prévia dos campos do cartão indisponíveis"><div>Número do cartão <span>•••• •••• •••• ••••</span></div><div>Nome no cartão <span>Como impresso no cartão</span></div><div>Validade <span>MM / AA</span></div><div>Código de segurança <span>•••</span></div></div><small>Não informe dados reais nesta demonstração.</small></div>
-            <label class="checkout-consent"><input v-model="agreed" type="checkbox" required /><span>Entendo que este pedido é uma simulação, sem pagamento, reserva de estoque ou envio.</span></label><div class="step-actions"><button type="button" class="step-back" @click="goToStep(2)"><ArrowLeft :size="15" /> Voltar</button><button class="button button-primary" type="submit">Concluir simulação <ArrowRight :size="18" /></button></div></template></section>
+            <div v-if="payment === 'pix'" class="payment-detail"><span class="detail-icon" aria-hidden="true"><QrCode :size="20" :stroke-width="1.8" /></span><div><strong>{{ pixPayment ? 'Pix gerado. Finalize o pagamento.' : 'Simples assim: escolheu, pagou, ficou on.' }}</strong><p v-if="!pixPayment">O QR Code e o código Pix serão gerados ao continuar.</p><p v-else>Pedido {{ orderId }} · aguardando confirmação do Mercado Pago.</p></div></div>
+            <div v-if="payment === 'pix' && pixPayment" class="pix-result"><img v-if="pixPayment.qrCodeBase64" :src="`data:image/png;base64,${pixPayment.qrCodeBase64}`" alt="QR Code Pix para pagamento" /><label v-if="pixPayment.qrCode">Pix copia e cola<textarea readonly :value="pixPayment.qrCode" aria-label="Código Pix copia e cola" /></label><button v-if="pixPayment.qrCode" type="button" class="button button-outline" @click="copyPixCode">Copiar código Pix</button><a v-if="pixPayment.ticketUrl" :href="pixPayment.ticketUrl" target="_blank" rel="noopener noreferrer">Abrir pagamento no Mercado Pago</a></div>
+            <div v-if="payment === 'card'" class="payment-detail card-preview"><div class="card-preview-top"><div><strong>Pagamento seguro com cartão</strong><p>O formulário protegido do Mercado Pago gera um token de uso único.</p></div><span class="card-brands">VISA · master<span>card</span></span></div><div id="cardPaymentBrick_container"></div></div>
+            <p v-if="paymentError" class="form-warning" role="alert">{{ paymentError }}</p>
+            <label class="checkout-consent"><input v-model="agreed" type="checkbox" required /><span>Confirmo os dados e autorizo o envio do pedido ao Mercado Pago para iniciar o pagamento.</span></label><div class="step-actions"><button type="button" class="step-back" @click="goToStep(2)"><ArrowLeft :size="15" /> Voltar</button><button v-if="payment === 'pix' && !pixPayment" class="button button-primary" type="submit" :disabled="isPaying">{{ isPaying ? 'Gerando Pix…' : 'Gerar Pix' }} <ArrowRight :size="18" /></button><span v-else-if="payment === 'card'" class="form-hint">Use o botão seguro exibido no formulário do Mercado Pago.</span></div></template></section>
 
           <p class="checkout-footnote">Uma experiência feita por gente, para gente. <span>on</span></p>
         </form>
@@ -170,4 +240,14 @@ function simulate() {
 
 <style scoped>
 .checkout-progress{display:flex;align-items:center;gap:10px;padding:5px 2px 7px;color:#8290a0;font-size:10px;font-weight:800}.checkout-progress span{display:flex;align-items:center;gap:6px;white-space:nowrap}.checkout-progress b{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;border:1px solid #d6c8ba;font-size:10px}.checkout-progress span.current{color:#0045ba}.checkout-progress span.current b{color:#fff;background:#0045ba;border-color:#0045ba}.checkout-progress span.done{color:#047857}.checkout-progress span.done b{color:#047857;background:#e5f6ed;border-color:#e5f6ed}.checkout-progress i{height:1px;background:#dfd1c1;flex:1}.step-collapsed .section-heading-v2{margin-bottom:0}.step-pending{opacity:.58}.section-heading-v2>div{min-width:0}.section-heading-v2 p{overflow-wrap:anywhere}.section-heading-v2 h2:focus{outline:none}.step-edit{align-self:center;margin-left:auto;color:#0045ba;font-size:11px;font-weight:800;text-decoration:underline;text-underline-offset:3px}.step-next{margin-top:22px;width:100%}.step-actions{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:22px}.step-actions .button{min-height:46px;font-size:11px}.step-back{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800}.checkout-consent{margin-top:20px}@media(max-width:500px){.checkout-progress{gap:5px;font-size:9px}.checkout-progress span{gap:4px}.checkout-progress b{width:22px;height:22px}.step-actions{align-items:stretch;flex-direction:column-reverse}.step-actions .button{width:100%}.step-back{justify-content:center;padding:8px}}
+</style>
+
+<style scoped>
+.pix-result{display:grid;justify-items:center;gap:12px;margin:15px 0;padding:16px;border:1px solid #dce5f3;border-radius:12px;background:#fff}
+.pix-result>img{width:min(220px,100%);aspect-ratio:1;object-fit:contain}
+.pix-result label{display:grid;gap:6px;width:100%;font-size:11px;font-weight:800}
+.pix-result textarea{width:100%;min-height:76px;resize:vertical;padding:10px;border:1px solid #dfd1c1;border-radius:8px;background:#fffaf4;font:11px/1.5 monospace;overflow-wrap:anywhere}
+.pix-result a{font-size:11px;color:#0045ba;text-decoration:underline}
+.form-hint{font-size:10px;color:#61758a}
+#cardPaymentBrick_container{width:100%;margin-top:15px}
 </style>
