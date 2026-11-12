@@ -16,7 +16,7 @@ let announcementTimer: ReturnType<typeof setInterval> | undefined
 onMounted(() => {
   announcementTimer = setInterval(() => {
     announcementIndex.value = announcementIndex.value === 0 ? 1 : 0
-  }, 5000)
+  }, 3000)
 })
 onBeforeUnmount(() => {
   if (announcementTimer) clearInterval(announcementTimer)
