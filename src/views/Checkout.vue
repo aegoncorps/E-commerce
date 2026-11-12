@@ -7,6 +7,8 @@ import { findActiveCoupon, track, type Coupon } from '../admin-store'
 
 type PaymentMethod = 'pix' | 'card'
 type CheckoutStep = 1 | 2 | 3
+const configuredApiUrl = (import.meta.env.VITE_API_URL || 'https://ecommerce-aegon-api.vercel.app').trim()
+const apiUrl = (/^https?:\/\//i.test(configuredApiUrl) ? configuredApiUrl : `https://${configuredApiUrl}`).replace(/\/+$/, '')
 const step = ref<CheckoutStep>(1)
 const payment = ref<PaymentMethod>('pix')
 const completed = ref(false)
@@ -98,10 +100,10 @@ function submitStep() {
 onMounted(() => { if (cartItems.value.length) track('checkout_started', { path: '#/checkout' }) })
 onBeforeUnmount(() => { void cardBrick?.unmount(); if (paymentPoll) clearInterval(paymentPoll) })
 watch([step, payment], async ([currentStep, method]) => {
+  paymentError.value = ''
   if (currentStep !== 3 || method !== 'card') { await cardBrick?.unmount(); cardBrick = null; return }
   await nextTick()
-  const api = import.meta.env.VITE_API_URL?.replace(/\/$/, '')
-  if (!api) { paymentError.value = 'A conexão com o checkout ainda não foi configurada.'; return }
+  const api = apiUrl
   try {
     const configResponse = await fetch(`${api}/api/payments/config`)
     const config = await configResponse.json()
@@ -142,8 +144,7 @@ async function submitOrder(cardData?: Record<string, unknown>) {
   if (!agreed.value || !cartItems.value.length || isPaying.value) return
   paymentError.value = ''
   if (appliedCoupon.value) { paymentError.value = 'Cupons serão liberados no checkout após a validação no backend.'; return }
-  const api = import.meta.env.VITE_API_URL?.replace(/\/$/, '')
-  if (!api) { paymentError.value = 'A conexão com o checkout seguro ainda não foi configurada.'; return }
+  const api = apiUrl
   isPaying.value = true
   try {
     const response = await fetch(`${api}/api/orders`, {
