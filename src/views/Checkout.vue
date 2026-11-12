@@ -179,7 +179,6 @@ async function submitOrder(cardData?: Record<string, unknown>) {
       completed.value = true
       if (result.payment.status === 'processed' && result.payment.statusDetail === 'accredited') cart.value = []
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   } catch (error) {
     paymentError.value = error instanceof Error ? error.message : 'Falha ao iniciar o pagamento.'
   } finally { isPaying.value = false }
