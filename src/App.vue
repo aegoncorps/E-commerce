@@ -55,6 +55,11 @@ const infoCopy: Record<string, string[]> = {
     <div class="announcement"><span class="announcement-brand">Feito por gente. Menos do mesmo.</span><span class="announcement-center"><Transition name="push-right" mode="out-in"><span :key="announcementIndex" class="announcement-slide"><template v-if="announcementIndex === 0">A sua rotina no modo <span class="tiny-on">on</span></template><template v-else><Truck :size="15" stroke-width="2" /> Frete grátis na primeira compra</template></span></Transition></span><span class="announcement-region">Brasil <span class="announcement-divider">/</span> BRL R$</span></div>
     <header class="site-header">
       <div class="header-inner">
+        <div class="mobile-header" aria-label="Ações da loja">
+          <button class="mobile-header-action" aria-label="Abrir menu" @click="menuOpen = true"><Menu :size="24" /></button>
+          <button class="mobile-search" aria-label="Buscar produtos" @click="searchOpen = true"><Search :size="19" /><span>Buscar na Aegon</span></button>
+          <button class="mobile-header-action mobile-cart" :aria-label="`Abrir sacola com ${cartCount} itens`" @click="cartOpen = true"><ShoppingBag :size="22" /><span v-if="cartCount" class="mobile-cart-count">{{ cartCount }}</span></button>
+        </div>
         <RouterLink to="/" class="brand-link" aria-label="Aegon Store — início"><img src="/brand/assets/Logos/aegon-logo-positivo.svg" alt="aegon" width="126" height="47" /><span class="brand-store">store</span></RouterLink>
         <nav class="desktop-nav" aria-label="Navegação principal">
           <RouterLink to="/" :class="{ active: route.path === '/' }">Início</RouterLink>
@@ -114,6 +119,7 @@ const infoCopy: Record<string, string[]> = {
 </template>
 
 <style scoped>
+.mobile-header{display:none}
 .announcement-center{position:relative;overflow:hidden;min-height:22px}
 .announcement-slide{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
 .announcement-divider{padding:0 10px;opacity:.5}
@@ -126,5 +132,13 @@ const infoCopy: Record<string, string[]> = {
   .announcement-center{font-size:8px}
   .announcement-slide{gap:4px}
   .announcement-divider{padding:0 3px}
+  .site-header{background:var(--pulse-yellow)}
+  .header-inner{width:100%;min-height:62px;padding:0 14px}
+  .header-inner>.brand-link,.header-inner>.header-actions{display:none}
+  .mobile-header{display:grid;grid-template-columns:40px minmax(0,1fr) 40px;align-items:center;gap:10px;width:100%}
+  .mobile-header-action{position:relative;display:grid;place-items:center;width:40px;height:44px;color:var(--shadow-state)}
+  .mobile-search{display:flex;align-items:center;gap:9px;min-width:0;height:40px;padding:0 13px;border-radius:22px;background:#fff;color:var(--ink-muted);font-size:12px;text-align:left;box-shadow:0 2px 8px #0a284414}
+  .mobile-search span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mobile-cart-count{position:absolute;top:0;right:0;display:grid;place-items:center;min-width:17px;height:17px;padding:0 4px;border-radius:10px;background:var(--system-wake);color:#fff;font-size:10px;font-weight:800}
 }
 </style>

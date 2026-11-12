@@ -7,6 +7,12 @@ import { storefront } from '../admin-store'
 
 <template>
   <div class="home-page page-container">
+    <nav class="mobile-quick-nav" aria-label="Explorar por categoria">
+      <RouterLink to="/produtos">Tudo <ArrowUpRight :size="14" /></RouterLink>
+      <RouterLink to="/produtos?categoria=Camisas">Camisas</RouterLink>
+      <RouterLink to="/produtos?categoria=Garrafas">Garrafas</RouterLink>
+      <RouterLink to="/produtos?categoria=Combos">Kits</RouterLink>
+    </nav>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy"><div class="hero-eyebrow"><span class="live-dot"></span> {{ storefront.eyebrow }}</div><h1 id="hero-title">{{ storefront.headline }}<br /><span>{{ storefront.highlight }}</span></h1><p class="hero-subtitle">{{ storefront.subtitle }}</p><RouterLink to="/produtos" class="button button-cream">{{ storefront.cta }} <ArrowUpRight :size="19" /></RouterLink><div class="hero-caption"><span class="hero-caption-line"></span>Original por essência. on por escolha.</div></div>
       <div class="hero-photo"><img class="hero-flatlay" :src="storefront.heroImage" alt="Produtos Aegon em destaque" width="919" height="509" fetchpriority="high" /><span class="photo-corner"></span><div class="hero-photo-label"><span>DETALHES QUE CONECTAM.</span><span>COLEÇÃO / 01</span></div><div class="hero-sticker"><span>feito por<br />gente.</span><ArrowUpRight :size="23" /></div><div class="hero-photo-bottom"><span>Wear your state of mind.</span><span class="photo-on">on</span></div></div>
@@ -25,3 +31,21 @@ import { storefront } from '../admin-store'
     <section class="values-row" aria-label="Nosso jeito de fazer"><div><Fingerprint :size="27" :stroke-width="1.4" /><span><strong>Identidade, de verdade.</strong><small>Design autoral em cada escolha.</small></span></div><div><Layers :size="27" :stroke-width="1.4" /><span><strong>Detalhes que importam.</strong><small>Do primeiro olhar ao uso diário.</small></span></div><div><Sparkles :size="27" :stroke-width="1.4" /><span><strong>Feito pra acompanhar.</strong><small>Essenciais que fazem parte de você.</small></span></div></section>
   </div>
 </template>
+
+<style scoped>
+.mobile-quick-nav{display:none}
+@media(max-width:650px){
+  .home-page{padding-top:12px}
+  .mobile-quick-nav{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 0 12px;padding:0 0 2px;white-space:nowrap}
+  .mobile-quick-nav::-webkit-scrollbar{display:none}
+  .mobile-quick-nav a{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:38px;padding:0 15px;border:1px solid var(--line);border-radius:20px;background:#fff;font-size:11px;font-weight:700;flex:0 0 auto}
+  .mobile-quick-nav a:first-child{background:var(--system-wake);border-color:var(--system-wake);color:var(--core-pulse)}
+  .hero-copy{padding:24px 23px 25px}
+  .hero-eyebrow{margin-bottom:16px}
+  .hero h1{font-size:clamp(39px,10vw,52px)}
+  .hero-copy>p{margin-top:14px}
+  .hero .button{margin-top:17px}
+  .hero-photo{min-height:185px}
+  .hero-sticker{width:64px;height:64px;top:48px;right:18px;font-size:11px}
+}
+</style>
