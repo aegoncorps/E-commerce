@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Search, ShoppingBag, Heart, ArrowUpRight, ArrowRight, Menu, Plus, Minus, Trash2, Check, Package, Sparkles, MoveUpRight } from 'lucide-vue-next'
+import { Search, ShoppingBag, Heart, ArrowUpRight, ArrowRight, Menu, Plus, Minus, Trash2, Check, Package, Sparkles, MoveUpRight, Truck } from 'lucide-vue-next'
 import OverlayPanel from './components/OverlayPanel.vue'
 import { money, products } from './data/products'
 import { cartOpen, searchOpen, menuOpen, cartCount, cartItems, subtotal, setQuantity, notice, storageWarning } from './store'
@@ -11,6 +11,16 @@ const router = useRouter()
 const isAdmin = computed(() => route.path.startsWith('/admin'))
 const search = ref('')
 const info = ref('')
+const announcementIndex = ref(0)
+let announcementTimer: ReturnType<typeof setInterval> | undefined
+onMounted(() => {
+  announcementTimer = setInterval(() => {
+    announcementIndex.value = announcementIndex.value === 0 ? 1 : 0
+  }, 5000)
+})
+onBeforeUnmount(() => {
+  if (announcementTimer) clearInterval(announcementTimer)
+})
 function skipToContent() {
   const main = document.getElementById('main-content')
   main?.focus()
@@ -42,7 +52,7 @@ const infoCopy: Record<string, string[]> = {
   <div class="site" :inert="modalOpen || undefined">
     <template v-if="!isAdmin">
     <a href="#main-content" class="skip-link" @click.prevent="skipToContent">Pular para o conteúdo</a>
-    <div class="announcement"><span>Feito por gente. Menos do mesmo.</span><span class="announcement-center">A sua rotina no modo <span class="tiny-on">on</span></span><span>Brasil <span class="announcement-divider">/</span> BRL R$</span></div>
+    <div class="announcement"><span class="announcement-brand">Feito por gente. Menos do mesmo.</span><span class="announcement-center"><Transition name="push-right" mode="out-in"><span :key="announcementIndex" class="announcement-slide"><template v-if="announcementIndex === 0">A sua rotina no modo <span class="tiny-on">on</span></template><template v-else><Truck :size="15" stroke-width="2" /> Frete grátis na primeira compra</template></span></Transition></span><span class="announcement-region">Brasil <span class="announcement-divider">/</span> BRL R$</span></div>
     <header class="site-header">
       <div class="header-inner">
         <RouterLink to="/" class="brand-link" aria-label="Aegon Store — início"><img src="/brand/assets/Logos/aegon-logo-positivo.svg" alt="aegon" width="126" height="47" /><span class="brand-store">store</span></RouterLink>
@@ -102,3 +112,19 @@ const infoCopy: Record<string, string[]> = {
   <OverlayPanel v-if="menuOpen" title="Explore a Aegon" side @close="menuOpen = false"><nav class="mobile-nav" aria-label="Navegação mobile" @click="menuOpen = false"><RouterLink to="/">Início <ArrowUpRight /></RouterLink><RouterLink to="/produtos">Toda a coleção <ArrowUpRight /></RouterLink><RouterLink to="/produtos?categoria=Camisas">Vestuário <ArrowUpRight /></RouterLink><RouterLink to="/produtos?categoria=Combos">Kits & combos <ArrowUpRight /></RouterLink><RouterLink to="/favoritos">Favoritos <Heart /></RouterLink></nav><img class="menu-symbol" src="/brand/assets/Logos/on-tipografico-azul.svg" alt="on" /></OverlayPanel>
   <OverlayPanel v-if="info" :title="info" @close="info = ''"><div class="info-copy"><p v-for="paragraph in infoCopy[info]" :key="paragraph">{{ paragraph }}</p><a v-if="info === 'Fale com a Aegon'" class="button button-primary" href="mailto:aegoncorps@gmail.com">Enviar e-mail <ArrowUpRight :size="18" /></a></div></OverlayPanel></template>
 </template>
+
+<style scoped>
+.announcement-center{position:relative;overflow:hidden;min-height:22px}
+.announcement-slide{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.announcement-divider{padding:0 10px;opacity:.5}
+.push-right-enter-active,.push-right-leave-active{transition:transform .35s ease,opacity .35s ease}
+.push-right-enter-from{transform:translateX(-18px);opacity:0}
+.push-right-leave-to{transform:translateX(18px);opacity:0}
+@media(max-width:650px){
+  .announcement{justify-content:space-between;padding-inline:12px;font-size:8px}
+  .announcement-brand{display:none}
+  .announcement-center{font-size:8px}
+  .announcement-slide{gap:4px}
+  .announcement-divider{padding:0 3px}
+}
+</style>
