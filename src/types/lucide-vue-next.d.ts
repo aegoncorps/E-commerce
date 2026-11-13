@@ -7,6 +7,8 @@ declare module 'lucide-vue-next' {
   export const Check: Component
   export const CheckCircle2: Component
   export const ChevronRight: Component
+  export const ChevronDown: Component
+  export const ChevronDown: Component
   export const CircleAlert: Component
   export const Copy: Component
   export const CreditCard: Component
@@ -22,6 +24,10 @@ declare module 'lucide-vue-next' {
   export const List: Component
   export const MapPin: Component
   export const MapPinned: Component
+  export const Megaphone: Component
+  export const BarChart3: Component
+  export const Megaphone: Component
+  export const BarChart3: Component
   export const Menu: Component
   export const Minus: Component
   export const MousePointer2: Component

@@ -48,6 +48,13 @@ export interface Coupon {
   used: number
   active: boolean
 }
+export interface Collection {
+  id: string
+  name: string
+  description: string
+  active: boolean
+  productIds: number[]
+}
 const now = () => new Date().toISOString()
 function read<T>(key: string, fallback: T): T {
   try { const value = JSON.parse(localStorage.getItem(key) || 'null'); return value ?? fallback } catch { return fallback }
@@ -65,10 +72,12 @@ export const storefront = reactive<StorefrontConfig>(read<StorefrontConfig>('aeg
   heroImage: '/editorial/aegon-flatlay.png',
 }))
 export const coupons = reactive<Coupon[]>(read<Coupon[]>('aegon:coupons:v1', [{ id: 'welcome-10', code: 'BEMVINDO10', type: 'percentage', value: 10, minimumOrder: 0, usageLimit: 100, used: 0, active: true }]))
+export const collections = reactive<Collection[]>(read<Collection[]>('aegon:collections:v1', []))
 watch(analyticsEvents, value => persist('aegon:analytics:v1', value), { deep: true })
 watch(orders, value => persist('aegon:orders:v1', value), { deep: true })
 watch(storefront, value => persist('aegon:storefront:v1', value), { deep: true })
 watch(coupons, value => persist('aegon:coupons:v1', value), { deep: true })
+watch(collections, value => persist('aegon:collections:v1', value), { deep: true })
 
 export function track(name: AnalyticsEventName, options: Omit<AnalyticsEvent, 'id' | 'name' | 'at'> = { path: window.location.hash }) {
   analyticsEvents.push({ id: crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`, name, path: options.path || window.location.hash, productId: options.productId, x: options.x, y: options.y, at: now() })
@@ -91,7 +100,15 @@ export function updateProduct(id: number, input: Omit<Product, 'id'>) {
 export function deleteProduct(id: number) {
   const index = products.findIndex(product => product.id === id)
   if (index !== -1) products.splice(index, 1)
+  collections.forEach(collection => { collection.productIds = collection.productIds.filter(productId => productId !== id) })
 }
+export function saveCollection(input: Omit<Collection, 'id'>, id?: string) {
+  const index = id ? collections.findIndex(collection => collection.id === id) : -1
+  const collection: Collection = { ...input, productIds: [...input.productIds], id: index >= 0 ? collections[index]!.id : (crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`) }
+  if (index >= 0) collections[index] = collection
+  else collections.unshift(collection)
+}
+export function deleteCollection(id: string) { const index = collections.findIndex(collection => collection.id === id); if (index !== -1) collections.splice(index, 1) }
 export function resetDemoData() {
   analyticsEvents.splice(0)
   orders.splice(0)
