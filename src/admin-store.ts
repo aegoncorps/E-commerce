@@ -54,6 +54,7 @@ export interface Collection {
   description: string
   active: boolean
   productIds: number[]
+  image?: string
 }
 const now = () => new Date().toISOString()
 function read<T>(key: string, fallback: T): T {
